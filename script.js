@@ -9,7 +9,7 @@ document.getElementById('signup-form').addEventListener('submit', function(event
         password: password
     };
 
-    // Saving user data to accounts.json
+    // Saving user data to localStorage
     saveUserData(userData);
 
     // Display success message
@@ -17,27 +17,7 @@ document.getElementById('signup-form').addEventListener('submit', function(event
 });
 
 function saveUserData(userData) {
-    var fs = require('fs');
-
-    // Check if the file exists
-    fs.access('accounts.json', fs.F_OK, (err) => {
-        if (err) {
-            // If the file doesn't exist, create it and write data
-            fs.writeFile('accounts.json', JSON.stringify([userData]), 'utf8', (err) => {
-                if (err) throw err;
-                console.log('Data has been written to accounts.json');
-            });
-        } else {
-            // If the file exists, read data, append new user data, and write back
-            fs.readFile('accounts.json', 'utf8', (err, data) => {
-                if (err) throw err;
-                var accounts = JSON.parse(data);
-                accounts.push(userData);
-                fs.writeFile('accounts.json', JSON.stringify(accounts), 'utf8', (err) => {
-                    if (err) throw err;
-                    console.log('Data has been written to accounts.json');
-                });
-            });
-        }
-    });
+    var accounts = JSON.parse(localStorage.getItem('accounts')) || [];
+    accounts.push(userData);
+    localStorage.setItem('accounts', JSON.stringify(accounts));
 }
