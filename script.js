@@ -21,3 +21,21 @@ function saveUserData(userData) {
     accounts.push(userData);
     localStorage.setItem('accounts', JSON.stringify(accounts));
 }
+function getUserData(username) {
+    var accounts = JSON.parse(localStorage.getItem('accounts')) || [];
+    var userData = accounts.find(function(user) {
+        return user.username === username;
+    });
+    return userData;
+}
+
+// Example usage:
+var usernameToFind = 'desired_username';
+var userData = getUserData(usernameToFind);
+
+if (userData) {
+    console.log('User data found:', userData);
+} else {
+    console.log('User data not found.');
+}
+
